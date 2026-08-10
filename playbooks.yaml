@@ -7,4 +7,4 @@
   ansible.builtin.import_playbook: playbooks/2rke2_config_setup.yaml
 
 - name: install kubectl on master nodes and kubeconfig Setup
-  ansible.builtin.import_playbook: playbooks/3install_kubectl.yaml
+  ansible.builtin.import_playbook: playbooks/3Install_kubectl.yaml
