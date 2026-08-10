@@ -1,5 +1,6 @@
 ---
 # tasks file for rke2-install-master
+
 - name: Install RKE2 server on master
   ansible.builtin.shell: curl -sfL https://get.rke2.io | sh -
   args:
@@ -12,3 +13,34 @@
     name: rke2-server
     enabled: true
     state: started
+    daemon_reload: true
+
+- name: Create kubectl symlink
+  ansible.builtin.file:
+    src: /var/lib/rancher/rke2/bin/kubectl
+    dest: /usr/local/bin/kubectl
+    state: link
+    force: true
+
+- name: Create .kube directory for ubuntu
+  ansible.builtin.file:
+    path: /home/ubuntu/.kube
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: "0700"
+
+- name: Copy RKE2 kubeconfig for ubuntu
+  ansible.builtin.copy:
+    src: /etc/rancher/rke2/rke2.yaml
+    dest: /home/ubuntu/.kube/config
+    remote_src: true
+    owner: ubuntu
+    group: ubuntu
+    mode: "0600"
+
+- name: Set KUBECONFIG server address
+  ansible.builtin.replace:
+    path: /home/ubuntu/.kube/config
+    regexp: '127\.0\.0\.1'
+    replace: '127.0.0.1'

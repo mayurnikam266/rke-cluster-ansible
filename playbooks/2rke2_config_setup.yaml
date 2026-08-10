@@ -16,3 +16,4 @@
   roles:
     - rke2_worker-config
     - rke2-install-worker
+    
