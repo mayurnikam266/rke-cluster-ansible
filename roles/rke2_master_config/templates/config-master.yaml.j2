@@ -1,0 +1,13 @@
+token: "{{ rke2_token }}"
+
+{% if rke2_node_role == 'joiner' %}
+server: "https://{{ rke2_vip }}:9345"
+{% endif %}
+
+tls-san:
+{% for host in groups['rke2_master'] %}
+  - "{{ hostvars[host].ansible_host | default(host) }}"
+{% endfor %}
+  - "{{ rke2_vip }}"
+
+write-kubeconfig-mode: "0644"

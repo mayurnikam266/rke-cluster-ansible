@@ -1,0 +1,16 @@
+---
+# tasks file for rke2-install-worker
+# tasks file for rke2-install-worker
+- name: Installing rke2 on worker
+  ansible.builtin.shell: curl -sfL https://get.rke2.io | sh -
+  args:
+    creates: /usr/local/bin/rke2
+  environment:
+    INSTALL_RKE2_TYPE: agent
+
+- name: Enabling and starting rke2 agent
+  ansible.builtin.systemd:
+    name: rke2-agent
+    enabled: true
+    state: started
+    

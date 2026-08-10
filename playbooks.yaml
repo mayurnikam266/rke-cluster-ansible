@@ -1,0 +1,7 @@
+---
+
+- name:  Setup Base Node Packages
+  ansible.builtin.import_playbook: playbooks/1Nodes_packages_setup.yaml
+
+- name: Setup RKE2 Cluster Configuration & Install Services
+  ansible.builtin.import_playbook: playbooks/2rke2_config_setup.yaml

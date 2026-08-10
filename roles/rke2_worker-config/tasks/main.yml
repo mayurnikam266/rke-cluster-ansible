@@ -1,0 +1,14 @@
+---
+# tasks file for rke2_worker-config
+
+- name: Create RKE2 config directory
+  file:
+    path: /etc/rancher/rke2
+    state: directory
+    mode: "0755"
+
+- name: Deploy worker config.yaml
+  template:
+    src: config-worker.yaml.j2
+    dest: /etc/rancher/rke2/config.yaml
+    mode: "0600"

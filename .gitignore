@@ -1,0 +1,7 @@
+*.retry
+*.log
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.tmp

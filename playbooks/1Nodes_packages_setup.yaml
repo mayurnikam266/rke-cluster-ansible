@@ -1,0 +1,35 @@
+---
+- name: Base Node Setup
+  hosts: all
+  become: true
+  vars:
+    packages:
+      - curl
+      - jq
+      - net-tools
+      - ca-certificates
+      - gnupg
+      - apt-transport-https
+
+  tasks:
+    - name: Set hostname for master nodes
+      ansible.builtin.hostname:
+        name: "master-{{ groups['rke2_master'].index(inventory_hostname) + 1 }}"
+      when: inventory_hostname in groups['rke2_master']
+
+    - name: Set hostname for worker nodes
+      ansible.builtin.hostname:
+        name: "worker-{{ groups['rke2_agents'].index(inventory_hostname) + 1 }}"
+      when: inventory_hostname in groups['rke2_agents']
+
+    - name: Installing required packages
+      ansible.builtin.apt:
+        update_cache: true
+        name: "{{ packages }}"
+        state: present
+
+    - name: Checking AppArmor status
+      ansible.builtin.command: aa-status
+      register: aa_status
+      changed_when: false
+      failed_when: false
