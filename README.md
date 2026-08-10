@@ -54,3 +54,4 @@ ansible-playbook -i inventory/inventory.ini playbooks.yaml
    ```bash
    ansible-playbook -i inventory/inventory.ini playbooks.yaml --limit 192.168.1.22
    ```
+# rke-cluster-ansible
