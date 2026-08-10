@@ -4,13 +4,13 @@ Simple, automated Ansible deployment for RKE2 Kubernetes cluster.
 
 ---
 
-## ⚡ Step 0: Prerequisites
+##  Step 0: Prerequisites
 - Ansible installed on your machine.
 - Passwordless SSH access (`ssh-copy-id`) to target nodes as `root` (or sudo user).
 
 ---
 
-## 🚀 Step 1: Edit Inventory (IPs Only)
+##  Step 1: Edit Inventory (IPs Only)
 
 Open `inventory/inventory.ini` and **just list your IP addresses**:
 
@@ -23,14 +23,14 @@ Open `inventory/inventory.ini` and **just list your IP addresses**:
 192.168.1.21
 ```
 
-> 💡 **Automatic Hostnames**: You don't need to name them! Ansible automatically names them:
+>  **Automatic Hostnames**: You don't need to name them! Ansible automatically names them:
 > - `192.168.1.10` ➔ `master-1`
 > - `192.168.1.20` ➔ `worker-1`
 > - `192.168.1.21` ➔ `worker-2`
 
 ---
 
-## 🚀 Step 2: Run Full Setup in 1 Command
+##  Step 2: Run Full Setup in 1 Command
 
 Execute the master playbook:
 
@@ -40,7 +40,7 @@ ansible-playbook -i inventory/inventory.ini playbooks.yaml
 
 ---
 
-## ➕ Adding a New Node Later
+##  Adding a New Node Later
 
 1. Add the new IP to `inventory/inventory.ini` under `[rke2_agents]`:
    ```ini
