@@ -1,36 +1,33 @@
 # RKE2 Cluster Deployment - Step-by-Step Guide
 
-Simple, automated Ansible deployment for RKE2 Kubernetes cluster.
+Automated Ansible deployment for RKE2 Kubernetes High-Availability Cluster.
 
 ---
 
-##  Step 0: Prerequisites
-- Ansible installed on your machine.
-- Passwordless SSH access (`ssh-copy-id`) to target nodes as `root` (or sudo user).
+##  Prerequisites
+- Ansible installed on the control machine.
+- SSH access to target nodes (`ubuntu` user with sudo access or `root`).
 
 ---
 
-##  Step 1: Edit Inventory (IPs Only)
+##  Inventory Setup (`inventory/inventory.ini`)
 
-Open `inventory/inventory.ini` and **just list your IP addresses**:
+Configure your control plane (`rke2_servers`) and worker nodes (`rke2_agents`) with explicit hostnames, IP addresses (`ansible_host`), connection modes, and users:
 
 ```ini
-[rke2_master]
-192.168.1.10
+[rke2_servers]
+rke2-server-01 ansible_host=172.31.84.173 ansible_connection=local
+rke2-server-02 ansible_host=172.31.93.75 ansible_user=ubuntu
+rke2-server-03 ansible_host=172.31.85.255 ansible_user=ubuntu
 
 [rke2_agents]
-192.168.1.20
-192.168.1.21
+rke2-agent-01 ansible_host=172.31.80.131 ansible_user=ubuntu
+rke2-agent-02 ansible_host=172.31.82.50 ansible_user=ubuntu
 ```
-
->  **Automatic Hostnames**: You don't need to name them! Ansible automatically names them:
-> - `192.168.1.10` ➔ `master-1`
-> - `192.168.1.20` ➔ `worker-1`
-> - `192.168.1.21` ➔ `worker-2`
 
 ---
 
-##  Step 2: Run Full Setup in 1 Command
+##  Run Deployment
 
 Execute the master playbook:
 
@@ -40,18 +37,17 @@ ansible-playbook -i inventory/inventory.ini playbooks.yaml
 
 ---
 
-##  Adding a New Node Later
+## ➕ Adding a New Agent Node Later
 
-1. Add the new IP to `inventory/inventory.ini` under `[rke2_agents]`:
+1. Open `inventory/inventory.ini` and append the new agent under `[rke2_agents]`:
    ```ini
    [rke2_agents]
-   192.168.1.20
-   192.168.1.21
-   192.168.1.22  # New node (auto-named worker-3)
+   rke2-agent-01 ansible_host=172.31.80.131 ansible_user=ubuntu
+   rke2-agent-02 ansible_host=172.31.82.50 ansible_user=ubuntu
+   rke2-agent-03 ansible_host=172.31.88.99 ansible_user=ubuntu  # <-- New worker node
    ```
 
-2. Run setup targeting only the new node:
+2. Run the deployment targeting only the new agent:
    ```bash
-   ansible-playbook -i inventory/inventory.ini playbooks.yaml --limit 192.168.1.22
+   ansible-playbook -i inventory/inventory.ini playbooks.yaml --limit rke2-agent-03
    ```
-# rke-cluster-ansible
