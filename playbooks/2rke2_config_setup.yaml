@@ -1,11 +1,11 @@
-- hosts: rke2_master[0]
+- hosts: rke2_servers[0]
   vars:
     rke2_node_role: primary
   roles:
     - rke2_master_config
     - rke2-install-master
 
-- hosts: rke2_master[1:]
+- hosts: rke2_servers[1:]
   vars:
     rke2_node_role: joiner
   roles:
@@ -14,5 +14,5 @@
 
 - hosts: rke2_agents
   roles:
-    - rke2_worker_config
+    - rke2_worker-config
     - rke2-install-worker

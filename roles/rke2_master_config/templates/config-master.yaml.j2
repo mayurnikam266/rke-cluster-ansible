@@ -5,7 +5,7 @@ server: "https://{{ rke2_vip }}:9345"
 {% endif %}
 
 tls-san:
-{% for host in groups['rke2_master'] %}
+{% for host in groups['rke2_servers'] %}
   - "{{ hostvars[host].ansible_host | default(host) }}"
 {% endfor %}
   - "{{ rke2_vip }}"
